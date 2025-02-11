@@ -8,8 +8,10 @@ public class SpaceShip : MonoBehaviour
     private Rigidbody rb;
     public GameObject bulletPrefab;
     public Transform bulletSpawnPosition;
-    private string stoel1 = "Student1";
-    private string stoel2 = "Student2";
+    public Transform shipPosition;
+    private float shootCD = 0.5f;
+    //private string stoel1 = "Student1";
+    //private string stoel2 = "Student2";
     public float ShipMovespeed = 1f;
     public float ShipRotationspeed = 1f;
 
@@ -48,20 +50,28 @@ public class SpaceShip : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown("space"))
+        shootCD -= Time.deltaTime;
+        if (Input.GetKeyDown("space") && shootCD <=0)
         {
             Shoot();
         }
     }
 
-    private void StoelSwitch()
-    {
-        String buffer = stoel1;
-        stoel1 = stoel2;
-        stoel2 = buffer;
-    }
+    //private void StoelSwitch()
+    //{
+    //    String buffer = stoel1;
+    //    stoel1 = stoel2;
+    //    stoel2 = buffer;
+    //}
     private void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPosition.position, new Quaternion(0, 0, 0, 0));
+        GameObject newBulletObject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        Projectile newBullet = newBulletObject.GetComponent<Projectile>();
+
+        if (newBullet != null)
+        {
+            newBullet.Initialize(shipPosition);
+        }
+        shootCD = 0.5f;
     }
 }

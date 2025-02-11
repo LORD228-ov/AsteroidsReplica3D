@@ -1,17 +1,20 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class Proje : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     [SerializeField] private Rigidbody bulletRB;
-    public float bulletSpeed = 5f;
-    public Transform bulletSpawnPosition2;
+    public float bulletSpeed = 20f;
+    private Vector3 shootDirection;
+
+    public void Initialize(Transform shipTransform)
+    {
+        shootDirection = (transform.position - shipTransform.position).normalized;
+    }
     void Start()
     {
-        
-    }
+        Destroy(gameObject, 1.5f);
+        bulletRB.linearVelocity = transform.forward * bulletSpeed;
 
-    void Update()
-    {
-        bulletRB.linearVelocity = bulletSpawnPosition2.forward * bulletSpeed;
     }
 }
