@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2518202627151435935}
   - component: {fileID: 3840012081813005436}
   - component: {fileID: 1508915712707156281}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,9 @@ GameObject:
   - component: {fileID: 7568988142500072209}
   - component: {fileID: 7929540973300755927}
   - component: {fileID: -5495399780104872928}
-  m_Layer: 0
+  - component: {fileID: 4333182672969896098}
+  - component: {fileID: 9200321399995880468}
+  m_Layer: 7
   m_Name: bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +158,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletRB: {fileID: -5495399780104872928}
   bulletSpeed: 10
-  shipPos: {fileID: 7568988142500072209}
 --- !u!54 &-5495399780104872928
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -184,3 +185,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4333182672969896098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8470071732404322107}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: 199de9a13d4d79e48ae1c0563ea33f26, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 0
+--- !u!114 &9200321399995880468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8470071732404322107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 275678b3836c8214fae568ce74f4389d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 enum Days
@@ -14,11 +15,14 @@ public class test : MonoBehaviour
 {
     private int animationValue = 1;
     private int dayValue = 1;
+    private int[] birthDates = {1989, 2001, 1999};
+    private int commonYear = 2025;
 
      void Start()
     {
         Animate();
         DayCheck();
+        BirthSum();
     }
     void Animate()
     {
@@ -76,5 +80,10 @@ public class test : MonoBehaviour
                 Debug.Log("Shiii");
                 break;
         }
+    }
+    private void BirthSum()
+    {
+        int sum = (commonYear * 3) - birthDates[0] + birthDates[1] + birthDates[2];
+        Debug.Log(sum + " is the overall age");
     }
 }
