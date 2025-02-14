@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
@@ -14,43 +14,46 @@ public class Asteroid : MonoBehaviour
     public int asteroidLevel;
     [SerializeField] private float explosionForce = 500f;
     [SerializeField] private float explosionRadius = 2f;
-    //void Start()
-    //{
-    //    asteroidLevel = Random.Range(1,4);
+    public GameManager gameManager;
+    [SerializeField] private BoxCollider playerCollider;
 
-    //    switch (asteroidLevel)
-    //    {
-    //        case 1:
-    //            asteroidX = 1f;
-    //            asteroidY = 1f;
-    //            asteroidZ = 1f;
-    //            break;
-    //        case 2:
-    //            asteroidX = 2f;
-    //            asteroidY = 2f;
-    //            asteroidZ = 2f;
-    //            break;
-    //        case 3:
-    //            asteroidX = 3f;
-    //            asteroidY = 3f;
-    //            asteroidZ = 3f;
-    //            break;
-    //    }
-
-    //    Vector3 newScale = new Vector3(asteroidX, asteroidY, asteroidZ);
-    //    transform.localScale = newScale;
-
-    //    float randomRotX = Random.Range(minRotation.x, maxRotation.x);
-    //    float randomRotY = Random.Range(minRotation.y, maxRotation.y);
-    //    float randomRotZ = Random.Range(minRotation.z, maxRotation.z);
-
-    //    transform.rotation = Quaternion.Euler(randomRotX, randomRotY, randomRotZ);
-    //}
     void Start()
     {
         asteroidLevel = Random.Range(1, 4);
         SetAsteroidSize();
         SetRandomRotation();
+    }
+
+    private Vector3 GetValidSpawnPosition()
+    {
+        Vector3 spawnPos;
+        do
+        {
+            Vector3 randomOffset = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-5f, 5f));
+            spawnPos = transform.position + randomOffset;
+        }
+        while (IsInsidePlayerCollider(spawnPos));
+
+        return spawnPos;
+    }
+
+    //private bool IsInsidePlayerCollider(Vector3 position)
+    //{
+    //    if (playerCollider == null) return false;
+
+    //    Bounds bounds = playerCollider.bounds;
+    //    return bounds.Contains(position);
+    //}
+    private bool IsInsidePlayerCollider(Vector3 position)
+    {
+        if (playerCollider == null) return false;
+
+        Collider[] colliders = Physics.OverlapBox(playerCollider.bounds.center, playerCollider.bounds.extents);
+        foreach (Collider col in colliders)
+        {
+            if (col == playerCollider) return true;
+        }
+        return false;
     }
 
     private void SetAsteroidSize()
@@ -76,13 +79,20 @@ public class Asteroid : MonoBehaviour
         transform.localScale = new Vector3(asteroidX, asteroidY, asteroidZ);
     }
 
-    private void SetRandomRotation()
+    private Quaternion SetRandomRotation()
     {
-        transform.rotation = Quaternion.Euler(
-            Random.Range(0f, 360f),
-            Random.Range(0f, 360f),
-            Random.Range(0f, 360f)
-        );
+        //transform.rotation = Quaternion.Euler(
+        //    Random.Range(0f, 360f),
+        //    Random.Range(0f, 360f),
+        //    Random.Range(0f, 360f)
+        //);
+
+        Quaternion randomRotation = Quaternion.Euler(
+    Random.Range(0f, 360f),
+    Random.Range(0f, 360f),
+    Random.Range(0f, 360f)
+);
+        return randomRotation;
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -122,12 +132,16 @@ public class Asteroid : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void SpawnAsteroids(int newLevel, int amount)
+    public void SpawnAsteroids(int newLevel, int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            Vector3 spawnPos = transform.position + Random.insideUnitSphere * 0.5f;
-            GameObject newAsteroid = Instantiate(asteroidPrefab, spawnPos, Quaternion.identity);
+            Vector3 spawnPos = GetValidSpawnPosition(); ;
+            GameObject newAsteroid = Instantiate(asteroidPrefab, spawnPos, SetRandomRotation());
+            Vector3 randomDirection = Random.insideUnitSphere.normalized;
+            float randomSpeed = Random.Range(1f, 5f);
+            asteroidRB.linearVelocity = randomDirection * randomSpeed;
+            gameManager.spawnedAsteroids.Add(newAsteroid);
             Asteroid asteroidScript = newAsteroid.GetComponent<Asteroid>();
             if (asteroidScript != null)
             {

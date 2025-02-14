@@ -10,8 +10,6 @@ public class SpaceShip : MonoBehaviour
     public Transform bulletSpawnPosition;
     public Transform shipPosition;
     private float shootCD = 0.5f;
-    //private string stoel1 = "Student1";
-    //private string stoel2 = "Student2";
     public float ShipMovespeed = 1f;
     public float ShipRotationspeed = 1f;
 
@@ -19,9 +17,7 @@ public class SpaceShip : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
-        //StoelSwitch();
-        //Debug.Log(stoel1 + " " + stoel2);
-        //bulletPrefab = GetComponent<GameObject>();
+
     }
 
     void FixedUpdate()
@@ -56,13 +52,6 @@ public class SpaceShip : MonoBehaviour
             Shoot();
         }
     }
-
-    //private void StoelSwitch()
-    //{
-    //    String buffer = stoel1;
-    //    stoel1 = stoel2;
-    //    stoel2 = buffer;
-    //}
     private void Shoot()
     {
         GameObject newBulletObject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);

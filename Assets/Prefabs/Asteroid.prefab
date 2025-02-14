@@ -155,6 +155,8 @@ MonoBehaviour:
   asteroidLevel: 0
   explosionForce: 500
   explosionRadius: 2
+  gameManager: {fileID: 8961996142846451705, guid: 6b43f0f23f83e7247a4e59eefe42790b, type: 3}
+  playerCollider: {fileID: 6101766717726842593, guid: 5e557fcc2f0a9954ba3b32f5327ccfd6, type: 3}
 --- !u!114 &-3574968193660845329
 MonoBehaviour:
   m_ObjectHideFlags: 0

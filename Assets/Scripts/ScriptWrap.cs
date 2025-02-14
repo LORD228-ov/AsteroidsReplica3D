@@ -12,10 +12,6 @@ public class ScriptWrap : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody> ();
-        Debug.Log(rightSide);
-        Debug.Log(leftSide);
-        Debug.Log(topSide);
-        Debug.Log(botSide);
     }
 
     // Update is called once per frame
