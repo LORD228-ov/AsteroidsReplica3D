@@ -158,6 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletRB: {fileID: -5495399780104872928}
   bulletSpeed: 10
+  particlePrefab: {fileID: 9021012673261202522, guid: 3c7cbbef257d8344ea4e42da21080858, type: 3}
 --- !u!54 &-5495399780104872928
 Rigidbody:
   m_ObjectHideFlags: 0

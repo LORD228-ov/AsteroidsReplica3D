@@ -122,14 +122,18 @@ public class Asteroid : MonoBehaviour
 
         if (asteroidLevel == 3)
         {
-            SpawnAsteroids(2, 2);
+            SpawnAsteroids(2, 1);
         }
         else if (asteroidLevel == 2)
         {
             SpawnAsteroids(1, 1);
+        } else if (asteroidLevel == 1)
+        {
+            Destroy(gameObject);
+
         }
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     public void SpawnAsteroids(int newLevel, int amount)
@@ -140,7 +144,7 @@ public class Asteroid : MonoBehaviour
             GameObject newAsteroid = Instantiate(asteroidPrefab, spawnPos, SetRandomRotation());
             Vector3 randomDirection = Random.insideUnitSphere.normalized;
             float randomSpeed = Random.Range(1f, 5f);
-            asteroidRB.linearVelocity = randomDirection * randomSpeed;
+            asteroidRB.linearVelocity = randomDirection * randomSpeed *2;
             gameManager.spawnedAsteroids.Add(newAsteroid);
             Asteroid asteroidScript = newAsteroid.GetComponent<Asteroid>();
             if (asteroidScript != null)
