@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Asteroid : MonoBehaviour
     private float asteroidY;
     private float asteroidZ;
     public int asteroidLevel;
+    private int asteroidScoreCost = 30;
     [SerializeField] private float explosionForce = 500f;
     [SerializeField] private float explosionRadius = 2f;
     public GameManager gameManager;
@@ -19,6 +21,8 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
+        asteroidRB = GetComponent<Rigidbody>();
+        //gameManager = GetComponent<GameManager>();
         asteroidLevel = Random.Range(1, 4);
         SetAsteroidSize();
         SetRandomRotation();
@@ -29,7 +33,7 @@ public class Asteroid : MonoBehaviour
         Vector3 spawnPos;
         do
         {
-            Vector3 randomOffset = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-5f, 5f));
+            Vector3 randomOffset = new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
             spawnPos = transform.position + randomOffset;
         }
         while (IsInsidePlayerCollider(spawnPos));
@@ -96,23 +100,12 @@ public class Asteroid : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        //if (asteroidLevel == 3)
-        //{
-        //    Vector3 spawnPos = gameObject.transform.position;
-
-        //}
-        //else if (asteroidLevel == 2)
-        //{
-
-        //} else if (asteroidLevel == 1)
-        //{
-        //    Destroy(gameObject);
-        //}
         Explode();
     }
 
     private void Explode()
     {
+        //gameManager.enabled = true;
         Vector3 explosionPos = transform.position;
 
         if (asteroidRB != null)
@@ -123,35 +116,62 @@ public class Asteroid : MonoBehaviour
         if (asteroidLevel == 3)
         {
             SpawnAsteroids(2, 1);
+            if (gameManager != null && gameManager.isActiveAndEnabled)
+            {
+                gameManager.ScoreUp(asteroidScoreCost);
+                //gameManager.currentValue += asteroidScoreCost;
+
+            }
+            else
+            {
+                Debug.LogError("GameManager неактивен или null!");
+            }
         }
         else if (asteroidLevel == 2)
         {
             SpawnAsteroids(1, 1);
-        } else if (asteroidLevel == 1)
+            if (gameManager != null && gameManager.isActiveAndEnabled)
+            {
+                gameManager.ScoreUp(asteroidScoreCost);
+
+            }
+            else
+            {
+                Debug.LogError("GameManager неактивен или null!");
+            }
+
+        }
+        else if (asteroidLevel == 1)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            if (gameManager != null && gameManager.isActiveAndEnabled)
+            {
+                gameManager.ScoreUp(asteroidScoreCost);
+            }
+            else
+            {
+                Debug.LogError("GameManager неактивен или null!");
+            }
+
 
         }
 
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     public void SpawnAsteroids(int newLevel, int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            Vector3 spawnPos = GetValidSpawnPosition(); ;
+            Vector3 spawnPos = GetValidSpawnPosition();
             GameObject newAsteroid = Instantiate(asteroidPrefab, spawnPos, SetRandomRotation());
             Vector3 randomDirection = Random.insideUnitSphere.normalized;
             float randomSpeed = Random.Range(1f, 5f);
             asteroidRB.linearVelocity = randomDirection * randomSpeed *2;
             gameManager.spawnedAsteroids.Add(newAsteroid);
             Asteroid asteroidScript = newAsteroid.GetComponent<Asteroid>();
-            if (asteroidScript != null)
-            {
-                asteroidScript.asteroidLevel = newLevel;
-                asteroidScript.SetAsteroidSize();
-            }
+            asteroidScript.asteroidLevel = newLevel;
+            asteroidScript.SetAsteroidSize();
         }
     }
 }
