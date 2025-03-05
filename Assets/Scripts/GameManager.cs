@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.HighDefinition.ScalableSettingLevelParameter;
 
 public class GameManager : MonoBehaviour
 {

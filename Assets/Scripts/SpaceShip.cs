@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SpaceShip : MonoBehaviour
 {
@@ -12,11 +14,18 @@ public class SpaceShip : MonoBehaviour
     private float shootCD = 0.5f;
     public float ShipMovespeed = 1f;
     public float ShipRotationspeed = 1f;
+    public Image[] livesImages;
+    private int lives = 3;
+    private bool isInvincible = false;
+    private float invincibilityTime = 3f;
+    private float blinkTime = 0.25f;
+    [SerializeField] private MeshRenderer shipModel;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
+        //shipModel = GetComponent<MeshRenderer>();
 
     }
 
@@ -43,14 +52,36 @@ public class SpaceShip : MonoBehaviour
         {
             rb.rotation *= Quaternion.AngleAxis(ShipRotationspeed, Vector3.down);
         }
+        Quaternion currentRotation = rb.rotation;
+        rb.rotation = Quaternion.Euler(0f, currentRotation.eulerAngles.y, 0f);
     }
-    private void Update()
+     void Update()
     {
         shootCD -= Time.deltaTime;
         if (Input.GetKeyDown("space") && shootCD <=0)
         {
             Shoot();
         }
+        if (isInvincible)
+        {
+            //rb.rotation = Quaternion.identity;
+            //rb.linearVelocity = Vector3.zero;
+            invincibilityTime -= Time.deltaTime;
+            blinkTime -= Time.deltaTime;
+
+            if (blinkTime <= 0f)
+            {
+                shipModel.enabled = !shipModel.enabled;
+                blinkTime = 0.25f;
+            }
+
+            if (invincibilityTime <= 0f)
+            {
+                isInvincible = false;
+                shipModel.enabled = true;
+            }
+        }
+
     }
     private void Shoot()
     {
@@ -65,13 +96,35 @@ public class SpaceShip : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("asteroid"))
+        if (collision.gameObject.CompareTag("asteroid") && !isInvincible)
         {
             ReportPlayerHit();
         }
     }
     public void ReportPlayerHit()
     {
-     
+        if (lives > 0)
+        {
+            lives--;
+            livesImages[lives].gameObject.SetActive(false);
+            RespawnPlayer();
+
+        }
+
+        if (lives <= 0)
+        {
+            SceneManager.LoadScene("Credits");
+
+        }
+    }
+    private void RespawnPlayer()
+    {
+        isInvincible = true;
+        invincibilityTime = 3f;
+        blinkTime = 0.25f;
+        rb.position = Vector3.zero;
+        rb.rotation = Quaternion.identity;
+        rb.linearVelocity = Vector3.zero;
+        shipModel.enabled = true;
     }
 }

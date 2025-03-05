@@ -68,6 +68,11 @@ MonoBehaviour:
   shipPosition: {fileID: 6657433512132746336}
   ShipMovespeed: 1
   ShipRotationspeed: 1
+  livesImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  shipModel: {fileID: 1451889156053042984}
 --- !u!54 &6153301298407831973
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -284,6 +289,8 @@ MonoBehaviour:
   shipPosition: {fileID: 318921740469632071}
   ShipMovespeed: 1
   ShipRotationspeed: 1
+  livesImages: []
+  shipModel: {fileID: 0}
 --- !u!54 &557191890286421604
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -354,6 +361,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 20, y: 20, z: 20}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1451889156053042984 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 4bea0e37277394e41b4cd709810c1064, type: 3}
+  m_PrefabInstance: {fileID: 281387975259593644}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7341952601710245371
 PrefabInstance:
   m_ObjectHideFlags: 0
