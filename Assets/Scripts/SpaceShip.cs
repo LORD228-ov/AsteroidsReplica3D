@@ -63,4 +63,15 @@ public class SpaceShip : MonoBehaviour
         }
         shootCD = 0.5f;
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("asteroid"))
+        {
+            ReportPlayerHit();
+        }
+    }
+    public void ReportPlayerHit()
+    {
+     
+    }
 }

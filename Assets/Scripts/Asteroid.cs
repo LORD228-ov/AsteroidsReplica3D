@@ -13,7 +13,7 @@ public class Asteroid : MonoBehaviour
     private float asteroidY;
     private float asteroidZ;
     public int asteroidLevel;
-    private int asteroidScoreCost = 30;
+    private int[] asteroidScoreCost = {25, 35, 50};
     [SerializeField] private float explosionForce = 500f;
     [SerializeField] private float explosionRadius = 2f;
     public GameManager gameManager;
@@ -21,6 +21,14 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
+
+        //GameObject obj = GameObject.Find("Player");
+        //if (obj != null)
+        //{
+        //    playerCollider = obj.GetComponent<BoxCollider>();
+        //    Debug.Log("Initiated");
+        //}
         asteroidRB = GetComponent<Rigidbody>();
         //gameManager = GetComponent<GameManager>();
         asteroidLevel = Random.Range(1, 4);
@@ -118,13 +126,13 @@ public class Asteroid : MonoBehaviour
             SpawnAsteroids(2, 1);
             if (gameManager != null && gameManager.isActiveAndEnabled)
             {
-                gameManager.ScoreUp(asteroidScoreCost);
+                gameManager.ScoreUp(asteroidScoreCost[0]);
                 //gameManager.currentValue += asteroidScoreCost;
 
             }
             else
             {
-                Debug.LogError("GameManager неактивен или null!");
+                Debug.LogError("GameManager is null!");
             }
         }
         else if (asteroidLevel == 2)
@@ -132,12 +140,12 @@ public class Asteroid : MonoBehaviour
             SpawnAsteroids(1, 1);
             if (gameManager != null && gameManager.isActiveAndEnabled)
             {
-                gameManager.ScoreUp(asteroidScoreCost);
+                gameManager.ScoreUp(asteroidScoreCost[1]);
 
             }
             else
             {
-                Debug.LogError("GameManager неактивен или null!");
+                Debug.LogError("GameManager is null!");
             }
 
         }
@@ -146,17 +154,18 @@ public class Asteroid : MonoBehaviour
             //Destroy(gameObject);
             if (gameManager != null && gameManager.isActiveAndEnabled)
             {
-                gameManager.ScoreUp(asteroidScoreCost);
+                gameManager.ScoreUp(asteroidScoreCost[2]);
             }
             else
             {
-                Debug.LogError("GameManager неактивен или null!");
+                Debug.LogError("GameManager is null!");
             }
 
 
         }
 
         Destroy(gameObject);
+        gameManager.spawnedAsteroids.Remove(gameObject);
     }
 
     public void SpawnAsteroids(int newLevel, int amount)
@@ -165,11 +174,13 @@ public class Asteroid : MonoBehaviour
         {
             Vector3 spawnPos = GetValidSpawnPosition();
             GameObject newAsteroid = Instantiate(asteroidPrefab, spawnPos, SetRandomRotation());
-            Vector3 randomDirection = Random.insideUnitSphere.normalized;
+            Vector3 randomDirection = new Vector3(Random.insideUnitSphere.x, 0f, Random.insideUnitSphere.z).normalized;
             float randomSpeed = Random.Range(1f, 5f);
-            asteroidRB.linearVelocity = randomDirection * randomSpeed *2;
+            Rigidbody newAsteroidRB = newAsteroid.GetComponent<Rigidbody>();
+            newAsteroidRB.linearVelocity = randomDirection * randomSpeed * 2;
             gameManager.spawnedAsteroids.Add(newAsteroid);
             Asteroid asteroidScript = newAsteroid.GetComponent<Asteroid>();
+            asteroidScript.gameManager = gameManager;
             asteroidScript.asteroidLevel = newLevel;
             asteroidScript.SetAsteroidSize();
         }

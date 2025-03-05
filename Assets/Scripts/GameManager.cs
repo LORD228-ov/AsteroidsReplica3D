@@ -9,11 +9,10 @@ public class GameManager : MonoBehaviour
 {
     public GameObject asteroidPrefab;
     [SerializeField] public List<GameObject> spawnedAsteroids = new List<GameObject>();
-    private float spawnCD = 3.5f;
     private int asteroidRequired = 3;
     public Asteroid asteroid;
-    public int currentValue;
-    private int targetValue = 0;
+    public int currentValue = 30;
+    private int targetValue = 30;
     public TextMeshProUGUI numberText;
     [SerializeField] private GameObject gameManagerObj;
     private Coroutine updateCoroutine;
@@ -21,16 +20,27 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StartNewRound();
-        gameManagerObj.gameObject.SetActive(true);
-        ScoreUp(currentValue);
+        //ScoreUp(currentValue);
+        UpdateText();
 
     }
-    void StartNewRound() {
-        asteroid.SpawnAsteroids(1, asteroidRequired);
-        //for (int i = 0; i < asteroidRequired; ++i)
-        //{
 
-        //}
+    //void Update()
+    //{
+    //    UpdateText();
+    //}
+    void StartNewRound()
+    {
+        spawnedAsteroids.Clear();
+        asteroid.SpawnAsteroids(1, asteroidRequired);
+
+        foreach (GameObject ast in GameObject.FindGameObjectsWithTag("asteroid"))
+        {
+            if (!spawnedAsteroids.Contains(ast))
+            {
+                spawnedAsteroids.Add(ast);
+            }
+        }
     }
     void EndRound()
     {
@@ -48,45 +58,26 @@ public class GameManager : MonoBehaviour
 
     public void ScoreUp(int amount)
     {
-        targetValue += amount;
-        if (updateCoroutine == null)
-        {
-            updateCoroutine = StartCoroutine(SmoothUpdate());
-        }
+        currentValue += amount;
+        //if (updateCoroutine == null)
+        //{
+        //    updateCoroutine = StartCoroutine(target);
+        //}
+        UpdateText();
     }
 
     private IEnumerator SmoothUpdate()
     {
-        while (Mathf.Abs(targetValue - currentValue) > 0.01f)
+        while (currentValue != targetValue)
         {
-            currentValue = Mathf.RoundToInt(Mathf.Lerp(currentValue, targetValue, Time.deltaTime * 5));
+            currentValue = (int)Mathf.MoveTowards(currentValue, targetValue, Time.deltaTime * 50);
             UpdateText();
             yield return null;
         }
-        currentValue = targetValue;
-        UpdateText();
         updateCoroutine = null;
     }
 
 
-    //private IEnumerator SmoothIncrease(int targetValue)
-    //{
-    //    int startValue = currentValue;
-    //    float duration = 1f;
-    //    float elapsed = 0f;
-
-    //    while (elapsed < duration)
-    //    {
-    //        elapsed += Time.deltaTime;
-    //        float t = elapsed / duration;
-    //        currentValue = Mathf.RoundToInt(Mathf.Lerp(startValue, targetValue, t));
-    //        UpdateText();
-    //        yield return null;
-    //    }
-
-    //    currentValue = targetValue;
-    //    UpdateText();
-    //}
 }
 
 
