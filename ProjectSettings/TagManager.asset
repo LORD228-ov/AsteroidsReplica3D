@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - asteroid
+  - Pickup
+  - player
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - Bullet
   - Player
   - Post-Processing
-  - 
+  - Pickups
   - 
   - 
   - 

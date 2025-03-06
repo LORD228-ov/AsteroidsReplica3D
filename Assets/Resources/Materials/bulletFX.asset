@@ -21,7 +21,7 @@ MonoBehaviour:
     value: 0
   color:
     overrideState: 1
-    value: {r: 0.5622641, g: 0.36812383, b: 0.36812383, a: 1}
+    value: {r: 0.9339623, g: 0.88367647, b: 0.5594963, a: 1}
   center:
     overrideState: 0
     value: {x: 0.5, y: 0.5}
@@ -62,7 +62,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 10000
+    value: 10
   threshold:
     overrideState: 0
     value: 0.5
@@ -123,7 +123,7 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   shutterAngle:
     overrideState: 0
     value: 188
@@ -148,7 +148,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 100
+    value: 21
   intensityX:
     overrideState: 0
     value: 1

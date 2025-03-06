@@ -12,17 +12,21 @@ public class SpaceShip : MonoBehaviour
     public Transform bulletSpawnPosition;
     public Transform shipPosition;
     private float shootCD = 0.5f;
-    public float ShipMovespeed = 1f;
-    public float ShipRotationspeed = 1f;
+    public float shipMovespeed;
+    public float shipRotationspeed;
     public Image[] livesImages;
     private int lives = 3;
     private bool isInvincible = false;
     private float invincibilityTime = 3f;
     private float blinkTime = 0.25f;
+    private GameManager gameManager;
     [SerializeField] private MeshRenderer shipModel;
+    public bool isSpeeded = false;
 
     void Start()
     {
+        shipMovespeed = 2f;
+        shipRotationspeed = 2f;
         rb = GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
         //shipModel = GetComponent<MeshRenderer>();
@@ -33,7 +37,7 @@ public class SpaceShip : MonoBehaviour
     {
         if (Input.GetAxis("Vertical") > 0)
         {
-            rb.AddRelativeForce(new Vector3(0, 0, ShipMovespeed));
+            rb.AddRelativeForce(new Vector3(0, 0, shipMovespeed));
         }
         if (Input.GetAxis("Vertical") < 0)
         {
@@ -46,11 +50,11 @@ public class SpaceShip : MonoBehaviour
         }
         if (Input.GetAxis("Horizontal") > 0)
         {
-            rb.rotation *= Quaternion.AngleAxis(ShipRotationspeed, Vector3.up);
+            rb.rotation *= Quaternion.AngleAxis(shipRotationspeed, Vector3.up);
         }
         if (Input.GetAxis("Horizontal") < 0)
         {
-            rb.rotation *= Quaternion.AngleAxis(ShipRotationspeed, Vector3.down);
+            rb.rotation *= Quaternion.AngleAxis(shipRotationspeed, Vector3.down);
         }
         Quaternion currentRotation = rb.rotation;
         rb.rotation = Quaternion.Euler(0f, currentRotation.eulerAngles.y, 0f);
@@ -119,12 +123,22 @@ public class SpaceShip : MonoBehaviour
     }
     private void RespawnPlayer()
     {
-        isInvincible = true;
-        invincibilityTime = 3f;
-        blinkTime = 0.25f;
+        ShieldOn();
         rb.position = Vector3.zero;
         rb.rotation = Quaternion.identity;
         rb.linearVelocity = Vector3.zero;
+        
+    }
+    public void ShieldOn()
+    {
+        isInvincible = true;
+        invincibilityTime = 3f;
+        blinkTime = 0.25f;
         shipModel.enabled = true;
+    }
+    public void Speedup()
+    {
+        shipMovespeed += 1f;
+        shipRotationspeed += 1f;
     }
 }
