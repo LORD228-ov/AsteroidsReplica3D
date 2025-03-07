@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.PackageManager;
+//using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.Rendering.HighDefinition.ScalableSettingLevelParameter;
@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private int asteroidRequired = 2;
     private int asteroidLevel;
     public Asteroid asteroid;
+    public SpaceShip player;
     public int currentValue = 30;
     private int targetValue = 30;
     public TextMeshProUGUI numberText;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        player = FindFirstObjectByType<SpaceShip>();
         StartNewRound();
         //ScoreUp(currentValue);
         UpdateText();
