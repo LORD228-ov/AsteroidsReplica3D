@@ -136,4 +136,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorMat: {fileID: 0}
   player: {fileID: 801875933597373926, guid: 5e557fcc2f0a9954ba3b32f5327ccfd6, type: 3}
+  pickUpSound: {fileID: 0}
   gameManager: {fileID: 0}

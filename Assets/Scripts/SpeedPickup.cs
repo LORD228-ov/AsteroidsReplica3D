@@ -4,6 +4,7 @@ public class SpeedPickup : BasePickup
 {
     void Start()
     {
+        //Initializing objects
         player = FindFirstObjectByType<SpaceShip>();
         colorMat = Resources.Load<Material>("Materials/SpeedPickup");
         ApplyMaterial();

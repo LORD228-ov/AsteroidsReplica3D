@@ -18,10 +18,14 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private float explosionRadius = 2f;
     public GameManager gameManager;
     [SerializeField] private BoxCollider playerCollider;
+    public AudioSource audioSource;
+    [SerializeField] private AudioClip boom;
 
     void Start()
     {
+        //Initializing objects
         gameManager = FindObjectOfType<GameManager>();
+        audioSource = GetComponent<AudioSource>();
 
         GameObject obj = GameObject.Find("Player");
         if (obj != null)
@@ -38,6 +42,7 @@ public class Asteroid : MonoBehaviour
 
     private Vector3 GetValidSpawnPosition()
     {
+        // checking player collaider
         Vector3 spawnPos;
         do
         {
@@ -59,6 +64,7 @@ public class Asteroid : MonoBehaviour
 
     private void SetAsteroidSize()
     {
+        // set new random values for new asteroid
         switch (asteroidLevel)
         {
             case 1:
@@ -97,11 +103,17 @@ public class Asteroid : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        //boom
         Explode();
+        Destroy(gameObject);
+
     }
 
     private void Explode()
     {
+        // adding force and check statements about asteroid level
+     
+
         //gameManager.enabled = true;
         Vector3 explosionPos = transform.position;
 
@@ -142,13 +154,14 @@ public class Asteroid : MonoBehaviour
 
 
         }
-
+        
         Destroy(gameObject);
         gameManager.spawnedAsteroids.Remove(gameObject);
     }
 
     public void SpawnAsteroids(int newLevel, int amount)
     {
+        // asteroid creating and setting values
         for (int i = 0; i < amount; i++)
         {
             Vector3 spawnPos = GetValidSpawnPosition();

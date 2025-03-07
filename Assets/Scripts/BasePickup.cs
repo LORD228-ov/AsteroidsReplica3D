@@ -7,6 +7,7 @@ public abstract class BasePickup : MonoBehaviour
     void Start()
     {
         ApplyMaterial();
+        //Initializing objects
         player = FindFirstObjectByType<SpaceShip>();
     }
 

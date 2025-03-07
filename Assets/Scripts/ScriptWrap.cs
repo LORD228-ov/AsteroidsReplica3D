@@ -23,6 +23,7 @@ public class ScriptWrap : MonoBehaviour
         //float topSide = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).z;
         //float botSide = Camera.main.ScreenToWorldPoint(new Vector2(0f, 0f)).z;
 
+        // move objects
         if (screenPos.x <= 0 && rb.linearVelocity.x < 0)
         {
             transform.position = new Vector3(rightPos, 0f, transform.position.z);

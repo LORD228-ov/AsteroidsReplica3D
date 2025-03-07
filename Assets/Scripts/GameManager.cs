@@ -22,10 +22,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject ScoreBonus;
     [SerializeField] private GameObject SpeedBonus;
     public Vector3 spawnArea;
+    public AudioManager audioManager;
 
 
     void Start()
     {
+        //Initializing objects
+        audioManager = FindFirstObjectByType<AudioManager>();
+        audioManager.SwitchTrack(0);
         player = FindFirstObjectByType<SpaceShip>();
         StartNewRound();
         //ScoreUp(currentValue);
@@ -34,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        //starting new round with some changes
         if (spawnedAsteroids.Count == 0)
         {
             asteroidRequired++;
@@ -42,6 +47,8 @@ public class GameManager : MonoBehaviour
     }
     void StartNewRound()
     {
+        // start new random and set random values
+        player.ShieldOn();
         spawnArea = new Vector3(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
         spawnedAsteroids.Clear();
         SpawnBonus();
@@ -49,6 +56,15 @@ public class GameManager : MonoBehaviour
         asteroid.SpawnAsteroids(asteroidLevel, asteroidRequired - 1);
         asteroidLevel = Random.Range(1, 4);
         asteroid.SpawnAsteroids(asteroidLevel, asteroidRequired - 1);
+
+        if (asteroidRequired == 4)
+        {
+            audioManager.SwitchTrack(1);
+        }
+        if (asteroidRequired == 6)
+        {
+            audioManager.SwitchTrack(2);
+        }
 
         foreach (GameObject ast in GameObject.FindGameObjectsWithTag("asteroid"))
         {
@@ -60,11 +76,13 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateText()
     {
+        // score viewing
         numberText.text = currentValue.ToString();
     }
 
     public void ScoreUp(int amount)
     {
+        //score up
         currentValue += amount;
         //if (updateCoroutine == null)
         //{
